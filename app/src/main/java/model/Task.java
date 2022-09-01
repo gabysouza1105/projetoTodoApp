@@ -4,8 +4,6 @@
  */
 package model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -95,14 +93,6 @@ public class Task {
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
-
-        // SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/uuuu");
-        // try {
-        //     Date deadline = formatter.parse(strDeadline);
-        //     this.deadline = deadline;
-        // } catch (ParseException e) {
-        //     e.printStackTrace();
-        // }
     }
 
     public Date getCreatedAt() {
@@ -119,6 +109,10 @@ public class Task {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public void updateUpdatedAt(){
+        updatedAt = new Date();
     }
 
     @Override

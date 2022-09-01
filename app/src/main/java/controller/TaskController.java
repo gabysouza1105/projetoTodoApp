@@ -41,7 +41,7 @@ public class TaskController {
             statement.setDate(6, new Date(task.getDeadline().getTime()));
             statement.setDate(7, new Date(task.getCreatedAt().getTime()));
             statement.setDate(8, new Date(task.getUpdatedAt().getTime()));
-            
+
             // Executando a query
             statement.execute();
         } catch (Exception e) {
@@ -52,8 +52,8 @@ public class TaskController {
     }
 
     public void update(Task task) {
-        String sql = "UPDATE tasks SET projectId = ?, name = ?, description = ?, notes = ?, "
-                + "completed = ?, deadline = ?, createdAt = ?, updatedAt = ? WHERE id = ?";
+        String sql = "UPDATE tasks SET name = ?, description = ?, notes = ?, "
+                + "deadline = ?, updatedAt = ? WHERE id = ?";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -65,15 +65,12 @@ public class TaskController {
             statement = connection.prepareStatement(sql);
 
             // Setando os valores do statement
-            statement.setInt(1, task.getProjectId());
-            statement.setString(2, task.getName());
-            statement.setString(3, task.getDescription());
-            statement.setString(4, task.getNotes());
-            statement.setBoolean(5, task.isCompleted());
-            statement.setDate(6, new Date(task.getDeadline().getTime()));
-            statement.setDate(7, new Date(task.getCreatedAt().getTime()));
-            statement.setDate(8, new Date(task.getUpdatedAt().getTime()));
-            statement.setInt(9, task.getId());
+            statement.setString(1, task.getName());
+            statement.setString(2, task.getDescription());
+            statement.setString(3, task.getNotes());
+            statement.setDate(4, new Date(task.getDeadline().getTime()));
+            statement.setDate(5, new Date(task.getUpdatedAt().getTime()));
+            statement.setInt(6, task.getId());
 
             // Executando a query
             statement.execute();
@@ -81,7 +78,6 @@ public class TaskController {
             throw new RuntimeException("Erro ao atualizar a tarefa " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(connection, statement);
-            ;
         }
     }
 
@@ -118,7 +114,7 @@ public class TaskController {
 
         // Lista de tarefas que será devolvida na chamada do método
         List<Task> tasks = new ArrayList<>();
-
+        
         try {
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
@@ -127,8 +123,8 @@ public class TaskController {
             // Retorno da execução da query
             resultSet = statement.executeQuery();
 
-            // Enquanto houverem valores no resultSet será criado uma tarefa e adicionada à
-            // lista
+            // Enquanto houverem valores no resultSet será criado uma tarefa e 
+            //adicionada à lista
             while (resultSet.next()) {
                 Task task = new Task();
 

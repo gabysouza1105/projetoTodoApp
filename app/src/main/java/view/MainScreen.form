@@ -83,7 +83,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanelTasks" max="32767" attributes="0"/>
-                  <Component id="jPanel4" pref="767" max="32767" attributes="0"/>
+                  <Component id="jPanel4" pref="472" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -101,7 +101,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanelProjectList" max="32767" attributes="0"/>
-                  <Component id="jPanel4" pref="476" max="32767" attributes="0"/>
+                  <Component id="jPanel4" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -329,7 +329,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabelEmptyListIcon" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabelEmptyListTitle" alignment="0" pref="757" max="32767" attributes="0"/>
+                          <Component id="jLabelEmptyListTitle" alignment="0" pref="462" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>

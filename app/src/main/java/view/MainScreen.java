@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
+import util.ButtonColumnCellRenderer;
+import util.DeadlineColumnCellRenderer;
 import util.TaskTableModel;
 
 /**
@@ -30,10 +32,11 @@ public class MainScreen extends javax.swing.JFrame {
 
     public MainScreen() {
         initComponents();
-        decorateTableTask();
 
         initDataController();
         initComponentModel();
+
+        decorateTableTask();
     }
 
     /**
@@ -293,7 +296,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelTasks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -307,7 +310,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelProjectList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -336,9 +339,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         taskDialogScreen.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                int projectIndex = jListProjects.getSelectedIndex();
-                Project project = (Project) projectsModel.get(projectIndex);
-                loadTasks(project.getId());
+                closeWindow();
             }
         });
     }//GEN-LAST:event_jLabelTasksAddMouseClicked
@@ -353,12 +354,19 @@ public class MainScreen extends javax.swing.JFrame {
                 taskController.update(task);
                 break;
             case 4:
+                TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled, task);
+                taskDialogScreen.setVisible(true);
 
+                taskDialogScreen.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        closeWindow();
+                    }
+                });
                 break;
             case 5:
                 taskController.removeById(task.getId());
                 taskModel.getTasks().remove(task);
-                
+
                 int projectIndex = jListProjects.getSelectedIndex();
                 Project project = (Project) projectsModel.get(projectIndex);
                 loadTasks(project.getId());
@@ -434,8 +442,9 @@ public class MainScreen extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setBackground(new Color(0, 102, 102));
         jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
 
-        // Criando um sort automático para as colunas da tabela
-        jTableTasks.setAutoCreateRowSorter(true);
+        jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRenderer());
+        jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRenderer("edit"));
+        jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRenderer("delete"));
     }
 
     public void initDataController() {
@@ -497,5 +506,11 @@ public class MainScreen extends javax.swing.JFrame {
         }
 
         jListProjects.setModel(projectsModel);
+    }
+
+    public void closeWindow() {
+        int projectIndex = jListProjects.getSelectedIndex();
+        Project project = (Project) projectsModel.get(projectIndex);
+        loadTasks(project.getId());
     }
 }

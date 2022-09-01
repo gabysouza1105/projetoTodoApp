@@ -15,11 +15,12 @@ import model.Project;
 public class ProjectDialogScreen extends javax.swing.JDialog {
 
     ProjectController controller;
-    
+
     public ProjectDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        hideErrorField();
+
         controller = new ProjectController();
     }
 
@@ -41,6 +42,7 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
         jTextFieldName = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
+        jLabelNameError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(400, 320));
@@ -90,6 +92,9 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
+        jLabelNameError.setForeground(new java.awt.Color(153, 0, 0));
+        jLabelNameError.setText("campo obrigatório");
+
         javax.swing.GroupLayout jPanelProjectLayout = new javax.swing.GroupLayout(jPanelProject);
         jPanelProject.setLayout(jPanelProjectLayout);
         jPanelProjectLayout.setHorizontalGroup(
@@ -100,7 +105,10 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
                     .addComponent(jScrollPane1)
                     .addComponent(jLabelDescription, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextFieldName, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelProjectLayout.createSequentialGroup()
+                        .addComponent(jLabelNameError)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanelProjectLayout.setVerticalGroup(
@@ -110,10 +118,12 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
                 .addComponent(jLabelName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelNameError)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelDescription)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -141,17 +151,21 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
 
     private void jLabelToolbarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelToolbarSaveMouseClicked
         try {
-            Project project = new Project();
-        project.setName(jTextFieldName.getText());
-        project.setDescription(jTextAreaDescription.getText());
-        
-        controller.save(project);
-        JOptionPane.showMessageDialog(rootPane, "Projeto salvo com sucesso");
+            if (!jTextFieldName.getText().isEmpty()) {
+                Project project = new Project();
+                project.setName(jTextFieldName.getText());
+                project.setDescription(jTextAreaDescription.getText());
+
+                controller.save(project);
+                JOptionPane.showMessageDialog(rootPane, "Projeto salvo com sucesso");
+                
+                this.dispose();
+            } else {
+                jLabelNameError.setVisible(true);
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
-              
-        this.dispose();
     }//GEN-LAST:event_jLabelToolbarSaveMouseClicked
 
     /**
@@ -199,6 +213,7 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelNameError;
     private javax.swing.JLabel jLabelToolbarSave;
     private javax.swing.JLabel jLabelToolbarTitle;
     private javax.swing.JPanel jPanelProject;
@@ -207,4 +222,8 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
     private javax.swing.JTextArea jTextAreaDescription;
     private javax.swing.JTextField jTextFieldName;
     // End of variables declaration//GEN-END:variables
+
+    public void hideErrorField(){
+        jLabelNameError.setVisible(false);
+    }
 }
